@@ -53,47 +53,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RESET  , _______, _______, _______, _______, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, _______, _______, _______, _______, KC_PAUS,          KC_NLCK,
         _______, KC_P1  , KC_P2  , KC_P3  , KC_P4  , KC_P5  , KC_P6  , KC_P7  , KC_P8  , KC_P9  , KC_P0  , _______, _______, KC_DEL,           _______,
         _______, RGB_TOG, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_PGUP,
-        KC_LOCK, _______, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          KC_PGDN,
-        _______,          _______, RGB_HUI, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
+        _______, _______, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          KC_PGDN,
+        _______,          _______, RGB_HUI, _______, _______, _______, _______, _______, _______, _______, _______,          _______, RGB_MOD, _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
     ),
 
 
 };
-// clang-format on
-
-bool keyLockActive = false;
-uint16_t lockedKey = 0;
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case KC_LOCK:
-      if (!record->event.pressed) {
-        keyLockActive = true;
-        rgblight_enable_noeeprom();
-        rgblight_mode_noeeprom(5);
-        rgblight_sethsv_noeeprom(HSV_RED);
-      }
-      break;
-    default:
-      // The way this works seems to be that KC_LOCK swallows the release event so that QMK won't process it.
-      // We need to check for a press here to register the locked key, or if it's a release check if it was the
-      // saved key so that we can disable the leds and reset the values.
-      if (record->event.pressed) {
-        if (keyLockActive && lockedKey == 0) {
-          lockedKey = keycode;
-        }
-      } else {
-        if (keyLockActive && lockedKey == keycode) { // Locked key was hit again. Key lock should now be off, so we should turn off the leds.
-          keyLockActive = false;
-          lockedKey = 0;
-          rgblight_disable_noeeprom();
-        }
-      }
-      break;
-  }
-  return true;
-}
 
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
