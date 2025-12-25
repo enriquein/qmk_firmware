@@ -50,24 +50,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [1] = LAYOUT(
-        RESET  , _______, _______, _______, _______, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, _______, _______, _______, _______, KC_PAUS,          KC_NLCK,
+        RESET  , _______, _______, _______, _______, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, _______, _______, _______, _______, KC_PAUS,          KC_NUM_LOCK,
         _______, KC_P1  , KC_P2  , KC_P3  , KC_P4  , KC_P5  , KC_P6  , KC_P7  , KC_P8  , KC_P9  , KC_P0  , _______, _______, KC_DEL,           _______,
-        _______, _______, _______, _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_PGUP,
+        _______, _______, _______, _______, QK_UNDERGLOW_TOGGLE, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_PGUP,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          KC_PGDN,
-        _______,          RGB_HUI, RGB_HUD, RGB_SPD, RGB_SPI, _______, _______, _______, _______, _______, _______,          _______, RGB_VAI, _______,
-        _______, _______, _______,                            _______,                            _______, _______, _______, RGB_RMOD,RGB_VAD, RGB_MOD
+        _______,          QK_UNDERGLOW_HUE_UP, QK_UNDERGLOW_HUE_DOWN, QK_UNDERGLOW_SPEED_DOWN, QK_UNDERGLOW_SPEED_UP, _______, _______, _______, _______, _______, _______,          _______, QK_RGB_MATRIX_VALUE_UP, _______,
+        _______, _______, _______,                            _______,                            _______, _______, _______, QK_UNDERGLOW_MODE_PREVIOUS, QK_RGB_MATRIX_VALUE_DOWN, QK_UNDERGLOW_MODE_NEXT
     ),
 
 
 };
 
-#ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-      tap_code(KC_VOLU);
-    } else {
-      tap_code(KC_VOLD);
-    }
-    return true;
-}
-#endif // ENCODER_ENABLE
+#if defined(ENCODER_MAP_ENABLE)
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [1] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
+};
+#endif
