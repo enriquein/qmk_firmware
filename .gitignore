@@ -1,7 +1,3 @@
-# Ignore all keyboards except the ones i own. Makes it easier to build.
-/keyboards
-!/keyboards/gmmk/*
-
 # Junk files
 *.bak
 *.swp
